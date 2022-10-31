@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @SpringBootTest
@@ -66,5 +67,52 @@ public class MpTest {
 		==> Parameters: goushidan(String), 1(Long)
 		* */
 		System.out.println(userMapper.updateById(user));
+	}
+
+	/**
+	 * createTime以及updateTime实现在insert或者update时自动赋值填充
+	 */
+	@Test
+	public void test5() {
+		User user = new User();
+
+		user.setName("lisi");
+		user.setAge(21);
+		user.setEmail("213@qq.com");
+		user.setCreateTime(new Date());//固定不变
+		user.setUpdateTime(new Date());//每次修改就要重新赋值
+
+		userMapper.insert(user);
+		System.out.println("user = " + user);
+
+		userMapper.selectById(user.getId());
+		System.out.println("user = " + user);
+
+		user.setAge(2);
+		user.setUpdateTime(new Date());//每次修改就要重新赋值
+		System.out.println("user = " + user);
+	}
+
+	@Test
+	public void test6() {
+		User user = new User();
+
+		user.setName("fuck");
+		user.setAge(221);
+		user.setEmail("2122223@qq.com");
+		//添加完对应的类实现MetaObjectHandler后不需要再写
+		/*user.setCreateTime(new Date());
+		user.setUpdateTime(new Date());*/
+		userMapper.insert(user);
+	}
+
+	@Test
+	public void test7() {
+		User user = new User();
+
+		user.setId(1587113287256948737L);
+		user.setAge(2121);
+
+		userMapper.updateById(user);
 	}
 }

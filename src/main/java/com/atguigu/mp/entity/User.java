@@ -1,9 +1,12 @@
 package com.atguigu.mp.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -16,6 +19,12 @@ public class User {
 	private String name;
 	private Integer age;
 	private String email;
+
+	//自带全自动驼峰映射
+	@TableField(fill = FieldFill.INSERT)
+	private Date createTime;//insert时赋值
+	@TableField(fill = FieldFill.INSERT_UPDATE)
+	private Date updateTime;//insert以及update时赋值
 
 	public static void main(String[] args) {
 		System.out.println(UUID.randomUUID().toString());
