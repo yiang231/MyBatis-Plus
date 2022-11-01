@@ -2,6 +2,8 @@ package com.atguigu.mp;
 
 import com.atguigu.mp.entity.User;
 import com.atguigu.mp.mapper.UserMapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -166,5 +168,54 @@ public class MpTest {
 //		List<Map<String, Object>> selectMaps = userMapper.selectMaps(queryWrapper);//将每一行查询到的数据转换为map对象	了解
 //
 //		IPage<Map<String, Object>> selectMapsPage = userMapper.selectMapsPage(page, queryWrapper);//将每行查询到的数据转换为map对象	了解
+	}
+
+	@Test
+	public void test11() {
+		long pageNum = 1;//当前页
+		long pageSize = 3;//每页条数
+		Page<User> page = new Page<>(pageNum, pageSize);
+
+		QueryWrapper<User> queryWrapper = null;//查询条件
+
+		Page<User> pageResult = userMapper.selectPage(page, queryWrapper);
+
+		System.out.println(page == pageResult);//true
+
+		List<User> records = pageResult.getRecords();//当前页数据
+		long total = pageResult.getTotal();//总记录数
+		long current = pageResult.getCurrent();//当前第几条
+		long size = pageResult.getSize();//每页多少条
+
+		records.forEach(System.out::println);
+	}
+
+	//结果为true表明，传什么返回什么，类似于以下操作
+	public Page<User> selectPage(Page<User> page) {
+		return page;
+	}
+
+	@Test
+	public void test12() {//改造后
+		long pageNum = 1;//当前页
+		long pageSize = 3;//每页条数
+		Page<User> pageParma = new Page<>(pageNum, pageSize);
+		QueryWrapper<User> queryWrapper = null;//查询条件
+
+		userMapper.selectPage(pageParma, queryWrapper);
+
+		List<User> records = pageParma.getRecords();//当前页数据
+		long total = pageParma.getTotal();//总记录数
+		long current = pageParma.getCurrent();//当前第几条
+		long size = pageParma.getSize();//每页多少条
+		long pages = pageParma.getPages();//总页数
+		boolean hasNext = pageParma.hasNext();//是否有下一页
+		boolean hasPrevious = pageParma.hasPrevious();//是否有上一页
+
+		/*
+		* ==>  Preparing: SELECT id,name,age,email,create_time,update_time,version FROM user LIMIT m,n   m = (page-1)*limit = (1-1)*3 = 从第几条开始
+		  ==> Parameters: 0(Long), 3(Long)
+		* */
+		records.forEach(System.out::println);
 	}
 }
