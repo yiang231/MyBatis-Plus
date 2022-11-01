@@ -115,4 +115,31 @@ public class MpTest {
 
 		userMapper.updateById(user);
 	}
+
+	@Test
+	public void test8() {
+		User user = new User();
+
+		user.setName("配置乐观锁");
+		user.setAge(30);
+		user.setEmail("123@qq.com");
+		userMapper.insert(user);
+		System.out.println("user = " + user);//version=1
+	}
+
+	@Test
+	public void test9() {
+		User user = userMapper.selectById(1587426270780645377L);
+
+		user.setEmail("3131@qq.com");
+		userMapper.updateById(user);
+		System.out.println("user = " + user);
+		/*
+		* ==>  Preparing: UPDATE user SET name=?, age=?, email=?, create_time=?, update_time=?, version=? WHERE id=? AND version=? 判断条件中version用来判断version数据是否发生变化，决定是否修改
+		==> Parameters: 配置乐观锁(String), 30(Integer), 3131@qq.com(String), 2022-11-01 20:48:11.0(Timestamp), 2022-11-01 20:50:26.48(Timestamp), 2(Integer), 1587426270780645377(Long), 1(Integer)
+		*
+		* user = User(id=1587426270780645377, name=配置乐观锁, age=30, email=3131@qq.com, createTime=Tue Nov 01 20:48:11 CST 2022, updateTime=Tue Nov 01 20:50:26 CST 2022, version=2)
+		* 此时将version手动改为3，查出来的版本号为2，条件不成立，就不会修改，Updates: 0
+		* */
+	}
 }

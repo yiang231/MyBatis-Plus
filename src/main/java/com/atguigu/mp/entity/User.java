@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
 import java.util.Date;
@@ -25,6 +26,11 @@ public class User {
 	private Date createTime;//insert时赋值
 	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private Date updateTime;//insert以及update时赋值
+
+	//数据库中version可以是整型或者时间类型
+	@Version//表示这是乐观锁字段
+	@TableField(fill = FieldFill.INSERT)
+	private Integer version;
 
 	public static void main(String[] args) {
 		System.out.println(UUID.randomUUID().toString());

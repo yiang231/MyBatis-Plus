@@ -13,6 +13,8 @@ public class UserMetaObjectHandler implements MetaObjectHandler {
 	public void insertFill(MetaObject metaObject) {
 		setFieldValByName("createTime", new Date(), metaObject);
 		setFieldValByName("updateTime", new Date(), metaObject);
+		//MetaObjectHandler处理器为version字段赋予默认值，或者在数据库表中手动指定默认版本号为1
+		setFieldValByName("version", 1, metaObject);
 	}
 
 	@Override
