@@ -142,4 +142,29 @@ public class MpTest {
 		* 此时将version手动改为3，查出来的版本号为2，条件不成立，就不会修改，Updates: 0
 		* */
 	}
+
+	@Test
+	public void test10() {
+//		//queryWrapper查询条件 仅仅只是条件查询，不可以分页
+//		List<User> selectList = userMapper.selectList(queryWrapper);//将每一行查询到的数据转换为User对象
+//		//根据id查询
+//		User selectById = userMapper.selectById(id);
+//		//满足queryWrapper的数据一共多少行
+//		Integer selectCount = userMapper.selectCount(queryWrappr);
+//		//根据指定条件查询返回一个对象	注意：如果该条件对应多条数据则会报错
+//		User selectOne = userMapper.selectOne(queryWrappr);
+//		//根据集合查询
+//		List<User> selectBatchIds = userMapper.selectBatchIds(Arrays.asList(1, 2, 3));
+//		//带条件的分页查询    重要
+//		IPage<User> selectPage = userMapper.selectPage(page, queryWrapper);
+//
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("age", 20);// 表中的列名
+//		map.put("name", "张三");
+//		List<User> selectByMap = userMapper.selectByMap(map);//where age = 20 and name = '张三'    （了解）
+//
+//		List<Map<String, Object>> selectMaps = userMapper.selectMaps(queryWrapper);//将每一行查询到的数据转换为map对象	了解
+//
+//		IPage<Map<String, Object>> selectMapsPage = userMapper.selectMapsPage(page, queryWrapper);//将每行查询到的数据转换为map对象	了解
+	}
 }
