@@ -364,4 +364,11 @@ public class MpTest {
 		//结果太多异常
 		//User user = userMapper.selectOne(queryWrapper);//查到的数据最多就一行
 	}
+
+	//自定义xml文件写复杂的SQL语句
+	@Test
+	public void test24() {
+		List<User> selectAll = userMapper.selectAll();
+		selectAll.forEach(System.out::println);
+	}
 }

@@ -70,5 +70,27 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <!--如果是这种路径com/atguigu/mp/mapper/xml/*.xml，需要添加以下代码-->
+        <!--<resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+            &lt;!&ndash;在resources目录下找xml文件&ndash;&gt;
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*.yml</include>
+                    <include>**/*.properties</include>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>-->
     </build>
 </project>
