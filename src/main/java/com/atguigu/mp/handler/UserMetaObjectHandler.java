@@ -15,6 +15,8 @@ public class UserMetaObjectHandler implements MetaObjectHandler {
 		setFieldValByName("updateTime", new Date(), metaObject);
 		//MetaObjectHandler处理器为version字段赋予默认值，或者在数据库表中手动指定默认版本号为1
 		setFieldValByName("version", 1, metaObject);
+		//采用这种方式赋予默认值，只有新增或者修改的数据才会有默认值
+		//setFieldValByName("isDeleted", 0, metaObject);
 	}
 
 	@Override

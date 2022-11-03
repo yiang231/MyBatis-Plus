@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootTest
 public class MpTest {
@@ -217,5 +220,41 @@ public class MpTest {
 		  ==> Parameters: 0(Long), 3(Long)
 		* */
 		records.forEach(System.out::println);
+	}
+
+	//删除
+	@Test
+	public void test13() {
+//		int delete = userMapper.delete(wrapper);//条件删除
+//		int deleteById = userMapper.deleteById();
+		int deleteBatchIds = userMapper.deleteBatchIds(Arrays.asList(1, 2, 3));
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("age", 23);//根据key=value的形式，等值删除
+		int deleteByMap = userMapper.deleteByMap(map);//了解即可 delete from user where age = ?;
+	}
+
+	//逻辑删除
+	@Test
+	public void test14() {
+		//userMapper.deleteById(1);
+		User user = userMapper.selectById(1);
+		user.setAge(190);
+		userMapper.updateById(user);
+		/*
+		* ==>  Preparing: UPDATE user SET name=?, age=?, email=?, update_time=? WHERE id=? AND is_deleted=0
+		  ==> Parameters: goushidan(String), 190(Integer), test1@baomidou.com(String), 2022-11-03 10:52:55.007(Timestamp), 1(Long)
+		* */
+		System.out.println("user = " + user);
+		/*
+		* ==>  Preparing: UPDATE user SET is_deleted=1 WHERE id=? AND is_deleted=0
+		  ==> Parameters: 1(Integer)
+		is_deleted = 0 时才会被改为 1，这个字段需要默认值
+		* */
+		/*
+		 * 给字段赋予默认值两种方式
+		 * 1、MetaObjectHandler处理器赋予默认值，只有新增或者修改的数据才会有默认值
+		 * 2、手动在表结构中进行定义
+		 * */
 	}
 }

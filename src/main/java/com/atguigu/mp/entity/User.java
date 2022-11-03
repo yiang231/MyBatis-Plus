@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.Version;
 import lombok.Data;
 
@@ -31,6 +32,9 @@ public class User {
 	@Version//表示这是乐观锁字段
 	@TableField(fill = FieldFill.INSERT)
 	private Integer version;
+
+	@TableLogic//逻辑删除注解
+	private Integer isDeleted;
 
 	public static void main(String[] args) {
 		System.out.println(UUID.randomUUID().toString());
