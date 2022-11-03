@@ -257,4 +257,111 @@ public class MpTest {
 		 * 2、手动在表结构中进行定义
 		 * */
 	}
+
+	//条件构造器queryWrapper
+	@Test
+	public void test15() {
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.eq("age", 21);//等于  column `列名`  value 值  //WHERE is_deleted=0 AND (age = ?)
+//		queryWrapper.ne();//不等于
+		queryWrapper.like("name", "i");//模糊查询  //WHERE is_deleted=0 AND (age = ? AND name LIKE ?)  //%i%
+		queryWrapper.or().likeLeft("name", "i");//%i	表示条件或or的关系，不写默认为与and
+		queryWrapper.or().likeRight("name", "i");//i%	//WHERE is_deleted=0 AND (age = ? AND name LIKE ? OR name LIKE ? OR name LIKE ?)
+//		queryWrapper.ge();//大于等于
+//		queryWrapper.le();//小于等于
+//		queryWrapper.gt();//大于
+//		queryWrapper.lt();//小于
+//		queryWrapper.isNull();//查询字段为空的
+//		queryWrapper.between("age", 1, 34);
+//		queryWrapper.notBetween("age", 1, 34);//范围查询
+//		queryWrapper.in("age", 21, 12, 190);//WHERE is_deleted=0 AND (age = ? AND name LIKE ? OR name LIKE ? OR name LIKE ? AND age IN (?,?,?))
+//		queryWrapper.notIn("age", 21, 12, 190);
+		List<User> selectList = userMapper.selectList(queryWrapper);
+		System.out.println("selectList = " + selectList);
+	}
+
+	@Test
+	public void test16() {
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.between("age", 12, 30);
+		Integer selectCount = userMapper.selectCount(queryWrapper);
+		System.out.println("selectCount = " + selectCount);
+	}
+
+	@Test
+	public void test17() {
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.between("age", 12, 30);
+
+		//排序
+		queryWrapper.orderByAsc("age");
+//		queryWrapper.orderByDesc("age");
+		List<User> selectList = userMapper.selectList(queryWrapper);//WHERE is_deleted=0 AND (age BETWEEN ? AND ?) ORDER BY age ASC
+		selectList.forEach(System.out::println);
+	}
+
+	//last追加自定义SQL
+	@Test
+	public void test18() {
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.between("age", 12, 30);
+
+		queryWrapper.last("limit 1");//只返回一条数据
+		queryWrapper.last("limit 2");//并且只能调用一次，调用多次只保留最后一次
+		List<User> selectList = userMapper.selectList(queryWrapper);//WHERE is_deleted=0 AND (age BETWEEN ? AND ?) limit 2
+		selectList.forEach(System.out::println);
+	}
+
+	//last存在SQL注入风险
+	@Test
+	public void test19() {
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.between("age", 12, 30);
+
+		queryWrapper.last("or 1 = 1");//慎用，存在SQL注入的风险，所有条件都成立	WHERE is_deleted=0 AND (age BETWEEN ? AND ?) or 1 = 1
+		List<User> selectList = userMapper.selectList(queryWrapper);//WHERE is_deleted=0 AND (age BETWEEN ? AND ?) limit 2
+		selectList.forEach(System.out::println);
+	}
+
+	//指定查询列
+	@Test
+	public void test20() {
+		//默认查询所有的列，工作室需要什么查询什么
+		//SELECT id,name,age,email,create_time,update_time,version,is_deleted FROM user WHERE is_deleted=0 AND (age BETWEEN ? AND ?) or 1 = 1
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.between("age", 12, 30);
+
+		queryWrapper.select("id", "name", "age");//无位置要求
+		List<User> selectList = userMapper.selectList(queryWrapper);//WHERE is_deleted=0 AND (age BETWEEN ? AND ?) limit 2
+		selectList.forEach(System.out::println);
+	}
+
+	//条件删除
+	@Test
+	public void test21() {
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.between("age", 12, 30);
+		userMapper.delete(queryWrapper);
+	}
+
+	//条件修改
+	@Test
+	public void test22() {
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.between("age", 12, 30);
+
+		User user = new User();
+		user.setAge(12);
+		userMapper.update(user, queryWrapper);
+	}
+
+	@Test
+	public void test23() {
+		QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+		queryWrapper.between("age", 12, 30);
+
+		//TooManyResultsException: Expected one result (or null) to be returned by selectOne(), but found: 12
+		//结果太多异常
+		//User user = userMapper.selectOne(queryWrapper);//查到的数据最多就一行
+	}
 }
